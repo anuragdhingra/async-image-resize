@@ -4,7 +4,7 @@ import base64
 import flask
 
 parser = reqparse.RequestParser()
-parser.add_argument('imageData', type=str)
+parser.add_argument('imageData', type=str, location='json',required=True)
 
 class Image(Resource):
 
