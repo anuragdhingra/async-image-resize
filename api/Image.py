@@ -6,7 +6,7 @@ import flask
 parser = reqparse.RequestParser()
 parser.add_argument('imageData', type=str)
 
-class Task(Resource):
+class Image(Resource):
 
     def post(self):
         logger.debug("POST Image")
