@@ -1,11 +1,29 @@
 version: '3'
 
 services:
-
+    redis:
+      image: redis:latest
+      container_name: redis_broker
+      ports:
+        - "6379:6379"
     api:
         build:
             context: .
             dockerfile: Dockerfile
+        container_name: image_resize_api
+        command: python app.py
         restart: always
         ports:
             - "5000:5000"
+        volumes:
+            - .:/app/
+        depends_on:
+            - redis
+    worker:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: celery_worker    
+        command: celery worker -A worker.celery --loglevel=info
+        depends_on:
+            - redis    
