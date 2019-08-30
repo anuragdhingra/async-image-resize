@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - "5000:5000"
