@@ -17,13 +17,3 @@ def resize_image():
         'success': True,
         'token': new_file_uuid,
     }), 202
-
-# @bp.route('/sleep/<task_id>', methods=['GET'])
-# def view_check_task(task_id):
-#     '''return task state'''
-
-#     task = tasks.wait_task.AsyncResult(task_id)
-#     output = {'task_id': task.id, 'state': task.state}
-#     if task.state == 'SUCCESS':
-#         output.update({'result': task.result})
-#     return jsonify(output)
