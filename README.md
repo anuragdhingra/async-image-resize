@@ -11,12 +11,12 @@ This would spin up three containers:
 - celery_worker 
 
 ## API
-- **POST `http://localhost:5000/api/v1/resize`
+- **POST** `http://localhost:5000/api/v1/resize`
     Headers 
-     - Content-Type: `application/json`
+     `Content-Type: application/json`
     Request Body
-        ```{
+        ```
+        {
             "imageData": "base64 encoded image"
-            } 
+        }
         ``` 
-
