@@ -1,12 +1,13 @@
 FROM python:3
-MAINTAINER Anurag Dhingra <anuragdhingra101@gmail.com>
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY requirements.txt ./
+RUN pip install --upgrade pip
 
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY api ./api/
+COPY app.py ./
+COPY worker.py ./
 
-CMD [ "python", "./app.py" ]

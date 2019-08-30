@@ -1,10 +1,8 @@
-from flask import Flask
-import logging as logger 
-logger.basicConfig(level="DEBUG")
+from api import create_app
 
-app = Flask(__name__)
+def run():
+    app = create_app()
+    app.run(host="0.0.0.0", port=5000)
 
-if __name__ == '__main__':
-    logger.debug("Starting the application")
-    from api import *
-    app.run(host="0.0.0.0",debug=True, use_reloader=True)
+if __name__ == "__main__":
+    run()
