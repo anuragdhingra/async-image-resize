@@ -12,10 +12,11 @@ celery = Celery(__name__, autofinalize=False)
 def async_resize(file_uuid,img_string):
     logger.info("Started resizing...")
 
+    img_str = img_string.split("base64,",1)[1]
     temp_filename = file_uuid + "_temp.jpg"
 
     with open(temp_filename, "wb") as fh:
-        fh.write(base64.decodebytes(img_string.encode()))
+        fh.write(base64.decodebytes(img_str.encode()))
     img = Image.open(temp_filename) 
 
     #for .png images where there is no alpha
@@ -31,4 +32,4 @@ def async_resize(file_uuid,img_string):
         os.remove(temp_filename)
     except OSError:
         pass
-    return "Saved as: " + new_filename
+    return "Saved as: " + new_filename 
