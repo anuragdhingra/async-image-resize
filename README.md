@@ -12,8 +12,10 @@ This would spin up three containers:
 
 ## API
 - **POST** `http://localhost:5000/api/v1/resize`
+
     Headers 
      `Content-Type: application/json`
+     
     Request Body
         ```
         {
