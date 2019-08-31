@@ -15,8 +15,6 @@ services:
         restart: always
         ports:
             - "5000:5000"
-        volumes:
-            - .:/app/
         depends_on:
             - redis
     worker:
@@ -25,5 +23,7 @@ services:
             dockerfile: Dockerfile
         container_name: celery_worker    
         command: celery worker -A worker.celery --loglevel=info
+        volumes:
+            - .:/app/
         depends_on:
             - redis    
