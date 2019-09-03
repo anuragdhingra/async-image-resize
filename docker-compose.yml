@@ -16,7 +16,7 @@ services:
         ports:
             - "5000:5000"
         depends_on:
-            - redis
+            - worker
     worker:
         build:
             context: .
@@ -26,4 +26,4 @@ services:
         volumes:
             - .:/app/
         depends_on:
-            - api
+            - redis
