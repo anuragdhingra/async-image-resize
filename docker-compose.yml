@@ -26,4 +26,4 @@ services:
         volumes:
             - .:/app/
         depends_on:
-            - redis    
+            - api

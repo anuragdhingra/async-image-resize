@@ -12,7 +12,7 @@ celery = Celery(__name__, autofinalize=False)
 def async_resize(file_uuid,img_string):
     logger.info("Started resizing...")
 
-    img_str = img_string.split("base64,",1)[1]
+    img_str = img_string.split("base64,",1)[-1]
     temp_filename = file_uuid + "_temp.jpg"
 
     with open(temp_filename, "wb") as fh:
