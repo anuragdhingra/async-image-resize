@@ -1,7 +1,8 @@
-from api import factory
 import json
 import unittest
-from mock import MagicMock 
+import time
+from api import factory
+from mock import MagicMock
 
 
 def _get_mock_celery_config():
@@ -18,24 +19,32 @@ class TestApi(unittest.TestCase):
 		factory.get_celery_config.return_value = _get_mock_celery_config()
 		self.app = factory.create_app()
 		self.client = self.app.test_client()
-		self.dummyImageData = {
-			"imageData": "some base64 encoded image",
-			}
-		self.dummyToken = {
-			"token": "f1c2e157-7b4c-4855-9e74-be3c9d71df17.jpg"
-		}	
+		self.dummy_image_data = {
+			"imageData": 'base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=',
+			}	
 			
 	def test_post_resize_image(self):
-		response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummyImageData), content_type='application/json')
+		response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummy_image_data), content_type='application/json')
 		self.assertEqual(response.status_code, 202)
 		self.assertEqual(response.json['success'], True)
 		self.assertIsNotNone(response.json['token'])
 
-	def test_get_status(self):
-		response = self.client.get(path='/api/v1/status', data=json.dumps(self.dummyToken), content_type='application/json')
+	def test_get_status_in_progress(self):
+		post_response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummy_image_data), content_type='application/json')
+		task_id = post_response.json['token']
+		response = self.client.get(path='/api/v1/status', data=json.dumps(dict(token=task_id)), content_type='application/json')
 		self.assertEqual(response.status_code, 200)
-		self.assertEqual(response.json['status'], "PENDING")
-		self.assertIsNone(response.json['resized_image_url'])
+		self.assertEqual(response.json['status'], "IN_PROGRESS")
+		self.assertIsNone(response.json['resized_image_url'])		
+
+	def test_get_status_success(self):
+		post_response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummy_image_data), content_type='application/json')
+		task_id = post_response.json['token']
+		time.sleep(0.5)
+		response = self.client.get(path='/api/v1/status', data=json.dumps(dict(token=task_id)), content_type='application/json')
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.json['status'], "SUCCESS")
+		self.assertIsNotNone(response.json['resized_image_url'])
 
 
 if __name__ == '__main__':

@@ -28,7 +28,6 @@ def async_resize(self, file_uuid, img_string):
     new_img.save(new_filename,'JPEG',optimize=True, quality=100)
 
     # Sleep to test task status
-    time.sleep(20)
     logger.info("Completed resizing...")
 
     # Remove the temporary file
