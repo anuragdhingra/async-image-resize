@@ -28,3 +28,9 @@ def get_status():
         'status': state.get('status'),
         'resized_image_url': state.get('info'),
     }), 200
+
+
+@bp.route('/', methods=['GET'])
+def health():
+    logger.info("[HEALTH] GET")
+    return 'OK'

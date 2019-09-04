@@ -1,12 +1,15 @@
 from unittest.mock import patch
 import pytest
 from flask import Flask
-
+import json
+from mock import MagicMock
 from api.controller import routes
+from api.controller import tasks
 from api.factory import create_app
 
 
 app = Flask(__name__)
+app.register_blueprint(routes.bp)
 
 
 @pytest.fixture
@@ -17,36 +20,17 @@ def client():
 
 def test_health(client):
     response = client.get('/')
-    assert response.status_code == 404
+    assert response.status_code == 200
 
 
-# import pytest
-# import json
-# from api.controller import routes
-# from api import create_app
-# from mock import MagicMock
-# import flask
-#
-# app = create_app()
-#
-# def test_resize_api(mocker):
-#         request_mock = mocker.patch.object(flask, "request")
-#         request_mock.json['imageData'].return_value = "abcd"
-#         # uuid.uuid4() = MagicMock(return_value="1234")
-#         result_json = routes.resize_image()
-#         print(result_json)
-#         # assert result_json.status_code == 202
-#         # assert result_json.success == True
-#         # assert result_json.token == "1234"
-#
-#         # headers = {
-#         #     'Content-Type': json,
-#         # }
-#         # data = {
-#         #     'imageString': 'base64encodedstring'
-#         # }
-#         # url  = '/api/v1/resize/'
-#         # response = client.post(url,data=json.dumps(data),headers=headers)
-#         # assert response.status_code == 202
-#         # assert response.content_type == 'application/json'
-#         # assert response.json == {'success': 'true'}
+def test_get_status(client):
+    # Initialize dummy_task here
+    dummy_task = dict(status='Working', info='Done')
+    tasks.check_status = MagicMock(return_value=dummy_task)
+
+    response = client.get('/status', data=json.dumps(dict(token='1234')), content_type='application/json')
+
+    assert response.status_code == 200
+
+
+# Do same thing for test_resize
