@@ -8,7 +8,7 @@ class TestApi(unittest.TestCase):
 
 	def setUp(self):
 		factory.get_app_config= MagicMock()
-		factory.get_app_config.return_value = ['redis://localhost:6379/0', 'redis://localhost:6379/0']
+		factory.get_app_config.return_value = 'redis://localhost:6379/0', 'redis://localhost:6379/0'
 		self.app = create_app()
 		self.client = self.app.test_client()
 		self.dummyImageData = {

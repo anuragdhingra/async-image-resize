@@ -12,14 +12,14 @@ def create_worker():
     return entrypoint(mode='worker')
 
 def get_app_config():
-    return ['redis://redis:6379/0', 'redis://redis:6379/0']
+    return 'redis://redis:6379/0', 'redis://redis:6379/0'
 
 def entrypoint(mode='app'):
     app = Flask(__name__)
     
-    urls = get_app_config()
-    app.config['CELERY_BROKER_URL'] = urls[0]
-    app.config['CELERY_RESULT_BACKEND'] = urls[1]    
+    broker_url, backend_url = get_app_config()
+    app.config['CELERY_BROKER_URL'] = broker_url
+    app.config['CELERY_RESULT_BACKEND'] = backend_url    
 
     configure_celery(app, tasks.celery)
 
