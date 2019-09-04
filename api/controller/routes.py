@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, Blueprint, request, abort
+from flask import jsonify, Blueprint, request
 from api.controller import tasks
 import logging
 import uuid
@@ -6,6 +6,7 @@ import uuid
 
 bp = Blueprint('tasks', __name__)
 logger = logging.getLogger()
+
 
 @bp.route('/resize', methods=['POST'])
 def resize_image():
@@ -18,6 +19,7 @@ def resize_image():
         'token': task.id,
     }), 202
 
+
 @bp.route('/status', methods=['GET'])
 def get_status():
     task_id = request.json['token']
@@ -25,4 +27,4 @@ def get_status():
     return jsonify({
         'status': state.get('status'),
         'resized_image_url': state.get('info'),
-    }),200
+    }), 200
