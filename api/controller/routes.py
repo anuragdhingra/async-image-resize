@@ -11,9 +11,18 @@ logger = logging.getLogger()
 def resize_image():
     img_string = request.json['imageData']
     new_file_uuid = str(uuid.uuid4())
-    tasks.async_resize.delay(new_file_uuid,img_string)
+    task = tasks.async_resize.delay(new_file_uuid,img_string)
 
     return jsonify({
         'success': True,
-        'token': new_file_uuid,
+        'token': task.id,
     }), 202
+
+@bp.route('/status', methods=['GET'])
+def get_status():
+    task_id = request.json['token']
+    state = tasks.check_status(task_id)
+    return jsonify({
+        'status': state.get('status'),
+        'resized_image_url': state.get('info'),
+    }),200
