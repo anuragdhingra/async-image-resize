@@ -20,7 +20,7 @@ class TestApi(unittest.TestCase):
 		self.app = factory.create_app()
 		self.client = self.app.test_client()
 		self.dummy_image_data = {
-			"imageData": 'base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=',
+			"imageData": 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8Xw8AAoMBgDTD2qgAAAAASUVORK5CYII=',
 			}	
 			
 	def test_post_resize_image(self):

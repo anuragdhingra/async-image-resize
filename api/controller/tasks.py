@@ -14,11 +14,10 @@ def async_resize(self, file_uuid, img_string):
     logger.info("Started resizing...")
     self.update_state(state='IN_PROGRESS', meta=None)
 
-    img_str = img_string.split("base64,", 1)[1]
     temp_filename = file_uuid + "_temp.jpg"
 
     with open(temp_filename, "wb") as fh:
-        fh.write(base64.decodebytes(img_str.encode()))
+        fh.write(base64.decodebytes(img_string.encode()))
     img = Image.open(temp_filename) 
 
     # For .png images where there is no alpha
