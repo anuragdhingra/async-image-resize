@@ -1,2 +1,3 @@
-from api import create_worker
-celery = create_worker()
+from api import factory
+
+celery = factory.create_worker()
