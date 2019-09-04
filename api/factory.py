@@ -5,17 +5,21 @@ from api.controller import routes, tasks, celery
 
 logger = logging.getLogger()
 
-def create_app():
-    return entrypoint(mode='app')
+def create_app(test_mode=False):
+    return entrypoint(test_mode, mode='app')
 
 def create_worker():
     return entrypoint(mode='worker')
 
-def entrypoint(mode='app'):
+def entrypoint(test_mode=False, mode='app'):
     app = Flask(__name__)
     
-    app.config['CELERY_BROKER_URL'] = 'redis://redis:6379/0'
-    app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'
+    if test_mode == True:
+        app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+        app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+    else:
+        app.config['CELERY_BROKER_URL'] = 'redis://redis:6379/0'
+        app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'     
 
     configure_celery(app, tasks.celery)
 
