@@ -2,3 +2,4 @@ flask
 pillow
 celery
 redis
+mock
