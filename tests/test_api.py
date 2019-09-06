@@ -32,7 +32,7 @@ class TestApi(unittest.TestCase):
 	def test_get_status_in_progress(self):
 		post_response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummy_image_data), content_type='application/json')
 		task_id = post_response.json['token']
-		response = self.client.get(path='/api/v1/status', data=json.dumps(dict(token=task_id)), content_type='application/json')
+		response = self.client.get(path='/api/v1/resize/' + task_id, data=json.dumps(dict(token=task_id)), content_type='application/json')
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json['status'], "IN_PROGRESS")
 		self.assertIsNone(response.json['resized_image_url'])		
@@ -41,7 +41,7 @@ class TestApi(unittest.TestCase):
 		post_response = self.client.post(path='/api/v1/resize', data=json.dumps(self.dummy_image_data), content_type='application/json')
 		task_id = post_response.json['token']
 		time.sleep(0.5)
-		response = self.client.get(path='/api/v1/status', data=json.dumps(dict(token=task_id)), content_type='application/json')
+		response = self.client.get(path='/api/v1/resize/' + task_id, data=json.dumps(dict(token=task_id)), content_type='application/json')
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.json['status'], "SUCCESS")
 		self.assertIsNotNone(response.json['resized_image_url'])

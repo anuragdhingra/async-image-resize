@@ -20,10 +20,9 @@ def resize_image():
     }), 202
 
 
-@bp.route('/status', methods=['GET'])
-def get_status():
-    task_id = request.json['token']
-    state = tasks.check_status(task_id)
+@bp.route('/resize/<token>', methods=['GET'])
+def get_status(token):
+    state = tasks.check_status(token)
     return jsonify({
         'status': state.get('status'),
         'resized_image_url': state.get('info'),
