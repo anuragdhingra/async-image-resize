@@ -48,14 +48,15 @@ This would spin up three containers:
         }
         ```
     Example - 
-    REQUEST: `curl http://localhost:5000/api/v1/resize`
+    REQUEST: `curl http://localhost:5000/api/v1/resize/bce0e926-f6b4-4e7d-ada3-0548d0a1c2b6`
 
     RESPONSE: `{"resized_image_url":"72a77200-18e4-4df1-992b-d4f80c26c739.jpg","status":"SUCCESS"}`
 
 ## Testing
-Before running the tests please install the following in your local environment or you may also activate a fresh virtual environment to install these.
-- `pip install nose mock`
->Using `nose` to discover and run tests. `mock` is being used to inject/mock testing configuration while instantiating the app.
+Before running the tests please install the following dependencies in your local environment or you may also activate a fresh virtual environment.
+- `pip install -r requirements.txt`
+- `pip install nose`
+>Provides `nosetests` command to discover and run tests.
 
 Run the tests using: `nosetests tests/test_api.py`
 > Please make sure as to start the server using `docker-compose up` before running them.
@@ -79,6 +80,7 @@ The repo has the following structure:
  - `pillow` - python imaging library, used for resizing the image
  - `celery` - distributed task queue used for asynchronous task processing
  - `redis` - used as a message broker as well as the result backend for celery to communicate with the flask server.
+-  `mock` - used to inject/mock testing configuration while instantiating the app.
 
 ## Architecture/Flow
 ![flask-celery-redis.png](https://github.com/anuragdhingra/cogent-assignment/blob/develop/flask-celery-redis.png)
@@ -103,15 +105,9 @@ The repo has the following structure:
 #### Infra
 - Although Flask has a built-in web server, it’s not suitable for production and needs to be put behind a real web server able to communicate with Flask through a WSGI protocol. A common choice for that is Gunicorn— a Python WSGI HTTP server.
 - While being an HTTP web server, Gunicorn, is not suited to face the web. That’s why we need Nginx as a reverse proxy and to serve static files. In case we need to scale up our application to multiple servers, Nginx will take care of load balancing as well.
+- Also need to enable SSL module for nginx to configure HTTPS.
 - Currently, the resized images are created in a shared docker volume, assigned while creating the services. In a real-life application scenario, we'd require to upload these images to a object storage service(example- S3, Google cloud storage) and access them via a CDN. 
 
 #### Other
 - Monitoring of celery workers is also not implemented, for which we could use [Flower](https://flower.readthedocs.io/en/latest/). Flower also supports basic HTTP auth, oAuth and can also be used to manage the worker pool size and auto scale settings.
 - The current application lacks continuous integration and continuous deployment.
-
-
-
-
-
-
-
