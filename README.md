@@ -61,6 +61,8 @@ Before running the tests please install the following dependencies in your local
 Run the tests using: `nosetests tests/test_api.py`
 > Please make sure as to start the server using `docker-compose up` before running them.
 
+> One of the three tests may fail only the first time after starting the server due to some latency from redis.(if THP support is enabled in your kernel.)
+
 ## Structure
 The repo has the following structure:
 - `api/` 
