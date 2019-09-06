@@ -96,6 +96,7 @@ The repo has the following structure:
 - The current also lacks error handling, logging modes and handling the corner cases (example- image sent as the request is too large or of size zero or corrupted) which is a must for a production grade application. Similarily 
 - There is no persistent data storage used by the application, so we could use something like MySQL/PostgreSQL to persist task related data. We might also need some tool to manage the migrations.
 - The application also lacks basic authentication/authorization which could be implemented. APIs should validate requests to contain basic security headers/keys.
+- Currently the celery worker is running as a superuser inside the container which can be avoided by configuring it to not run as the root user.
 
 #### Testing:
 - There are no independent unit tests written thus currently we need the start the server running to test the entire flow of the API and its integration with the task-queue.
