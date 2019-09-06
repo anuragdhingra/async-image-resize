@@ -49,6 +49,7 @@ This would spin up three containers:
         ```
     Example - 
     REQUEST: `curl http://localhost:5000/api/v1/resize`
+
     RESPONSE: `{"resized_image_url":"72a77200-18e4-4df1-992b-d4f80c26c739.jpg","status":"SUCCESS"}`
 
 ## Testing
@@ -104,6 +105,13 @@ The repo has the following structure:
 - While being an HTTP web server, Gunicorn, is not suited to face the web. That’s why we need Nginx as a reverse proxy and to serve static files. In case we need to scale up our application to multiple servers, Nginx will take care of load balancing as well.
 - Currently, the resized images are created in a shared docker volume, assigned while creating the services. In a real-life application scenario, we'd require to upload these images to a object storage service(example- S3, Google cloud storage) and access them via a CDN. 
 
-## Other
+#### Other
 - Monitoring of celery workers is also not implemented, for which we could use [Flower](https://flower.readthedocs.io/en/latest/). Flower also supports basic HTTP auth, oAuth and can also be used to manage the worker pool size and auto scale settings.
 - The current application lacks continuous integration and continuous deployment.
+
+
+
+
+
+
+
