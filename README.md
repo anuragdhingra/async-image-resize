@@ -1,5 +1,5 @@
-# cogent-assignment
-BE engineering assignment for cogent labs
+# async-image-resize
+REST API which resizes images using flask, celery worker and a redis broker
 
 ## Starting the application
 ```docker
